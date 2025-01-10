@@ -101,9 +101,35 @@ if (plantCount > capacity80) {
 }
 console.log(`After ${weeks} weeks, the plant count is ${plantCount}. Action: ${action}`);
 
-//Solve the problem with a loop and a function
 
-function plantGrowth(weeks , initialPlants, radius, minSpace) {
+// Part 2: The Greenhouse Effect
+console.log("\n \n ************ Part 2: The Greenhouse Effect ************");
+// The amount of additional space that would be required if the scientists were to start with 100 plants, and did not prune them for 10 weeks.
+// If the space remained circular, what would be the radius of this expanded garden?
+
+//initial number of plants
+const initialPlants2 = 100;
+
+//weeks
+const numOfWeeks = 10;
+
+//calculating the plant count after 10 weeks
+plantCount = initialPlants2 * Math.pow(2, numOfWeeks);
+
+//calculating the required space
+const requiredSpace = plantCount * minSpace;
+
+//calculating the radius of the expanded garden
+const newRadius = Math.sqrt(requiredSpace / PI);
+
+//Results for the expanded garden
+console.log(`The plant count after 10 weeks will be ${plantCount}.`);
+console.log(`The radius of the expanded garden will be ${newRadius.toFixed(2)} meters.`);
+
+
+//Solve the problem with a loop and a function
+function plantGrowth(weeks, initialPlants, radius, minSpace) {
+    console.log("\n \n ************ plantGrowth ************");
     const area = PI * radius * radius;
     const maxCapacity = area / minSpace;
 
@@ -120,7 +146,15 @@ function plantGrowth(weeks , initialPlants, radius, minSpace) {
             action = "Planted: There is room to plant more plants.";
         }
         console.log(`After ${i} weeks, the plant count is ${plantCount}. Action: ${action}`);
-    }   
+    }
 }
-console.log("************ reuslt Using function and loop ************");
-plantGrowth(3, 20, 5, 0.8);
+
+
+function expandedGarden(initialPlants, numOfWeeks, minSpace) {
+    console.log("\n \n ************ Greenhouse Effect ************");
+    const plantCount = initialPlants * Math.pow(2, numOfWeeks);
+    const requiredSpace = plantCount * minSpace;
+    const newRadius = Math.sqrt(requiredSpace / PI);
+    console.log(`The plant count after ${numOfWeeks} weeks will be ${plantCount}.`);
+    console.log(`The radius of the expanded garden will be ${newRadius.toFixed(2)} meters.`);
+}
