@@ -1,5 +1,4 @@
-// Part 1: Growing Pains
-/*
+/* 
 Your task is to create a program that advises a group of environmental scientists
 how to handle the growth and spread of a unique plant species under their supervision. 
 You must develop a growth control system that will monitor and predict the plant growth, 
@@ -38,6 +37,7 @@ Implement control flow to make decisions on whether the plants should be:
 //TODO: Implement Planted, if there is room to plant more plants.
 //TODO: The results for 1, 2, and 3 weeks of growth as inputs.
 
+//#region Part 1: Growing Pains
 const PI = 3.1415;
 const radius = 5;
 
@@ -57,52 +57,32 @@ const maxCapacity = area / minSpace;
 const capacity80 = maxCapacity * 0.8;
 const capacity50 = maxCapacity * 0.5;
 
-
-//deciding the action based on the plant count
-// ****************** Week 1 ******************\\
-let weeks = 1;
-
-// Plants double every week
-let plantCount = initialPlants * Math.pow(2, weeks);
-
-let action;
-if (plantCount > capacity80) {
-    action = "Pruned: The plants need to be pruned to prevent exceeding garden capacity.";
-} else if (plantCount > capacity50) {
-    action = "Monitored: The plants are growing at an acceptable rate.";
-} else {
-    action = "Planted: There is room to plant more plants.";
+function getActionForWeek(week) {
+    const plantCount = initialPlants * Math.pow(2, week);
+    let action;
+    if (plantCount > capacity80) {
+        action = "Pruned: The plants need to be pruned to prevent exceeding garden capacity.";
+    } else if (plantCount >= capacity50 && plantCount <= capacity80) {
+        action = "Monitored: The plants are growing at an acceptable rate.";
+    } else {
+        action = "Planted: There is room to plant more plants.";
+    }
+    console.log(`After ${week} weeks, the plant count is ${plantCount}. Action: ${action}`);
 }
-console.log(`After ${weeks} weeks, the plant count is ${plantCount}. Action: ${action}`);
+console.log("************ Part 1: Growing Pains ************");
 
-// ****************** Week 2 ******************\\
-weeks = 2;
-plantCount = initialPlants * Math.pow(2, weeks);
+console.log(`The maximum capacity of the garden is ${maxCapacity} plants. 
+${capacity80} plants at 80% capacity. \n${capacity50} plants at 50% capacity.`);
 
-if (plantCount > capacity80) {
-    action = "Pruned: The plants need to be pruned to prevent exceeding garden capacity.";
-} else if (plantCount > capacity50) {
-    action = "Monitored: The plants are growing at an acceptable rate.";
-} else {
-    action = "Planted: There is room to plant more plants.";
+//Results for 1, 2, and 3 weeks of growth
+let maxNumOfWeeks = 3;
+for(let i = 1; i <= maxNumOfWeeks; i++) {
+    getActionForWeek(i);
 }
-console.log(`After ${weeks} weeks, the plant count is ${plantCount}. Action: ${action}`);
+//#endregion
 
-// ****************** Week 3 ******************\\
-weeks = 3;
-plantCount = initialPlants * Math.pow(2, weeks);
-
-if (plantCount > capacity80) {
-    action = "Pruned: The plants need to be pruned to prevent exceeding garden capacity.";
-} else if (plantCount > capacity50) {
-    action = "Monitored: The plants are growing at an acceptable rate.";
-} else {
-    action = "Planted: There is room to plant more plants.";
-}
-console.log(`After ${weeks} weeks, the plant count is ${plantCount}. Action: ${action}`);
-
-
-// Part 2: The Greenhouse Effect
+//********************************************************************************* */
+//#region Part 2: The Greenhouse Effect
 console.log("\n \n ************ Part 2: The Greenhouse Effect ************");
 // The amount of additional space that would be required if the scientists were to start with 100 plants, and did not prune them for 10 weeks.
 // If the space remained circular, what would be the radius of this expanded garden?
@@ -125,30 +105,52 @@ const newRadius = Math.sqrt(requiredSpace / PI);
 //Results for the expanded garden
 console.log(`The plant count after 10 weeks will be ${plantCount}.`);
 console.log(`The radius of the expanded garden will be ${newRadius.toFixed(2)} meters.`);
+//#endregion
 
+//********************************************************************************* */
+//#region Part 3: Errors in Judgement
+/*
+The scientists decided not to listen to your recommendations,
+and have instead started with 100 plants in the original 5-meter-radius garden.
+Use try and catch to wrap your work in an error-handling block.
+If the amount of space required to hold the originally 
+provided number of plants exceeds the amount of space available,
+throw a new error and log an appropriate message
+*/
 
-//Solve the problem with a loop and a function
+console.log("\n \n ************ Part 3: Errors in Judgement ************");
 function plantGrowth(weeks, initialPlants, radius, minSpace) {
-    console.log("\n \n ************ plantGrowth ************");
     const area = PI * radius * radius;
     const maxCapacity = area / minSpace;
 
     const prunedCapacity = maxCapacity * 0.8;
     const monitoredCapacity = maxCapacity * 0.5;
 
-    for (let i = 1; i <= weeks; i++) {
-        let plantCount = initialPlants * Math.pow(2, i);
-        if (plantCount > prunedCapacity) {
-            action = "Pruned: The plants need to be pruned to prevent exceeding garden capacity.";
-        } else if (plantCount <= prunedCapacity && plantCount > monitoredCapacity) {
-            action = "Monitored: The plants are growing at an acceptable rate.";
-        } else {
-            action = "Planted: There is room to plant more plants.";
+    try {
+        for (let i = 1; i <= weeks; i++) {
+            let plantCount = initialPlants * Math.pow(2, i);
+            let requiredSpace = plantCount * minSpace;
+            if (requiredSpace > area) {
+                throw new Error(`The plants exceed the capacity of the garden. 
+                    \n Required Space: ${requiredSpace} \n Garden Area: ${area}`);
+            } else {
+                if (plantCount > prunedCapacity) {
+                    action = "Pruned: The plants need to be pruned to prevent exceeding garden capacity.";
+                } else if (plantCount <= prunedCapacity && plantCount > monitoredCapacity) {
+                    action = "Monitored: The plants are growing at an acceptable rate.";
+                } else {
+                    action = "Planted: There is room to plant more plants.";
+                }
+                console.log(`After ${i} weeks, the plant count is ${plantCount}. Action: ${action}`);
+            }
         }
-        console.log(`After ${i} weeks, the plant count is ${plantCount}. Action: ${action}`);
+    } catch (error) {
+        console.log("Caught an error!");
+        console.log(error.message);
     }
 }
 
+plantGrowth(10, 100, 5, 0.8);
 
 function expandedGarden(initialPlants, numOfWeeks, minSpace) {
     console.log("\n \n ************ Greenhouse Effect ************");
