@@ -63,7 +63,7 @@ const capacity50 = maxCapacity * 0.5;
 let weeks = 1;
 
 // Plants double every week
-let plantCount = initialPlants * Math.pow(2, weeks); 
+let plantCount = initialPlants * Math.pow(2, weeks);
 
 let action;
 if (plantCount > capacity80) {
@@ -77,7 +77,7 @@ console.log(`After ${weeks} weeks, the plant count is ${plantCount}. Action: ${a
 
 // ****************** Week 2 ******************\\
 weeks = 2;
-plantCount = initialPlants * Math.pow(2, weeks); 
+plantCount = initialPlants * Math.pow(2, weeks);
 
 if (plantCount > capacity80) {
     action = "Pruned: The plants need to be pruned to prevent exceeding garden capacity.";
@@ -90,7 +90,7 @@ console.log(`After ${weeks} weeks, the plant count is ${plantCount}. Action: ${a
 
 // ****************** Week 3 ******************\\
 weeks = 3;
-plantCount = initialPlants * Math.pow(2, weeks); 
+plantCount = initialPlants * Math.pow(2, weeks);
 
 if (plantCount > capacity80) {
     action = "Pruned: The plants need to be pruned to prevent exceeding garden capacity.";
@@ -101,4 +101,26 @@ if (plantCount > capacity80) {
 }
 console.log(`After ${weeks} weeks, the plant count is ${plantCount}. Action: ${action}`);
 
+//Solve the problem with a loop and a function
 
+function plantGrowth(weeks , initialPlants, radius, minSpace) {
+    const area = PI * radius * radius;
+    const maxCapacity = area / minSpace;
+
+    const prunedCapacity = maxCapacity * 0.8;
+    const monitoredCapacity = maxCapacity * 0.5;
+
+    for (let i = 1; i <= weeks; i++) {
+        let plantCount = initialPlants * Math.pow(2, i);
+        if (plantCount > prunedCapacity) {
+            action = "Pruned: The plants need to be pruned to prevent exceeding garden capacity.";
+        } else if (plantCount <= prunedCapacity && plantCount > monitoredCapacity) {
+            action = "Monitored: The plants are growing at an acceptable rate.";
+        } else {
+            action = "Planted: There is room to plant more plants.";
+        }
+        console.log(`After ${i} weeks, the plant count is ${plantCount}. Action: ${action}`);
+    }   
+}
+console.log("************ reuslt Using function and loop ************");
+plantGrowth(3, 20, 5, 0.8);
